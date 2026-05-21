@@ -32,13 +32,13 @@ mes1/
 ### 后端启动
 ```bash
 cd backend
-# 待完善
+go run main.go
 ```
 
 ### 前端启动
 ```bash
 cd frontend
-# 待完善
+npm run dev
 ```
 
 ## 开发规范
