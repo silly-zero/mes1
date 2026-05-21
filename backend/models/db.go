@@ -22,7 +22,7 @@ func InitDB() {
 	}
 
 	// 自动迁移
-	err = db.AutoMigrate(&User{})
+	err = db.AutoMigrate(&User{}, &Material{}, &InboundOrder{}, &Stock{}, &StockLog{})
 	if err != nil {
 		log.Fatalf("Failed to migrate database: %v", err)
 	}

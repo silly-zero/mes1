@@ -8,9 +8,24 @@ const routes = [
   },
   {
     path: '/',
-    name: 'Home',
     component: () => import('../views/Home.vue'),
-    meta: { requiresAuth: true }
+    children: [
+      {
+        path: '',
+        name: 'Dashboard',
+        component: () => import('../views/Dashboard.vue')
+      },
+      {
+        path: 'inventory',
+        name: 'Inventory',
+        component: () => import('../views/Inventory.vue')
+      },
+      {
+        path: 'inbound',
+        name: 'Inbound',
+        component: () => import('../views/Inbound.vue')
+      }
+    ]
   }
 ]
 
@@ -21,7 +36,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const token = localStorage.getItem('token')
-  if (to.meta.requiresAuth && !token) {
+  if (to.name !== 'Login' && !token) {
     next('/login')
   } else {
     next()

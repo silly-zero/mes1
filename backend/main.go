@@ -31,6 +31,15 @@ func main() {
 	auth := api.Group("/")
 	auth.Use(middleware.AuthMiddleware())
 	{
+		// 库存管理
+		inventory := auth.Group("/inventory")
+		{
+			inventory.GET("/list", handlers.GetStockList)
+			inventory.GET("/inbound", handlers.GetInboundOrders)
+			inventory.POST("/inbound", handlers.CreateInboundOrder)
+			inventory.POST("/inbound/:id/confirm", handlers.ConfirmInbound)
+		}
+
 		// 核心管理员权限
 		core := auth.Group("/core")
 		core.Use(middleware.RoleMiddleware(models.RoleCoreAdmin))
