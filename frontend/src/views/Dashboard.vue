@@ -15,7 +15,7 @@
       </el-col>
       <el-col :span="8">
         <el-card shadow="hover">
-          <template #header>库存预警</dt>
+          <template #header>库存预警</template>
           <div class="card-value color-danger">2</div>
         </el-card>
       </el-col>
