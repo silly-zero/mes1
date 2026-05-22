@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"golang.org/x/crypto/bcrypt"
+	"gorm.io/gorm"
 )
 
 // SeedData 填充初始演示数据
@@ -14,6 +15,7 @@ func SeedData() {
 	seedInboundOrders()
 	seedStocks()
 	seedOutboundOrders()
+	seedMSDRecords()
 }
 
 func seedUsers() {
@@ -49,61 +51,81 @@ func seedMaterials() {
 func seedInboundOrders() {
 	var count int64
 	DB.Model(&InboundOrder{}).Count(&count)
-	if count == 0 {
+	// 如果记录数较少或没有，我们重新填充以展示新字段
+	if count < 3 {
+		DB.Unscoped().Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&InboundOrder{})
 		now := time.Now().Format("2006-01-02 15:04:05")
 		orders := []InboundOrder{
 			{
-				InboundNo:      "MESSC202246303042401250911000001",
-				IsUrgent:       true,
-				ConfirmType:    "来料入库确认",
-				ReceiveNo:      "W202246303042401250910000002",
-				MaterialCode:   "33004070002",
-				TotalQty:       200,
-				QualifiedQty:   0,
-				UnqualifiedQty: 0,
-				IsQCConfirmed:  false,
-				IsInbound:      false,
-				OrgCode:        "202246303042401",
-				OrgName:        "林钲杰01",
-				Source:         "手动创建",
+				InboundNo:       "MESSC202246303042401250911000001",
+				IsUrgent:        true,
+				ConfirmType:     "来料入库确认",
+				ReceiveNo:       "W202346303032926051900001",
+				ReceiptTypeCode: "lyz004",
+				ReceiptTypeName: "客供收料",
+				MaterialCode:    "33004070002",
+				TotalQty:        200,
+				QualifiedQty:    0,
+				UnqualifiedQty:  0,
+				IsQCConfirmed:   false,
+				IsInbound:       false,
+				Status:          "未完成",
+				OrgCode:         "2023463030329",
+				OrgName:         "萧梓彬",
+				Source:          "手动创建",
+				ModifierID:      "2023463030329",
+				ModifierName:    "萧梓彬",
+				ModifyTime:      &now,
 			},
 			{
-				InboundNo:      "MESSC2023463030109260509000004",
-				IsUrgent:       false,
-				ConfirmType:    "来料入库确认",
-				ReceiveNo:      "W202346303010926042800010",
-				QCNo:           "QC260512000018",
-				MaterialCode:   "11002204007001",
-				TotalQty:       51,
-				QualifiedQty:   50,
-				UnqualifiedQty: 1,
-				IsQCConfirmed:  true,
-				QCUser:         "古波",
-				QCTime:         &now,
-				IsInbound:      false,
-				OrgCode:        "2023463030109",
-				OrgName:        "古波",
-				Source:         "手动创建",
+				InboundNo:       "MESSC2023463030109260509000004",
+				IsUrgent:        false,
+				ConfirmType:     "来料入库确认",
+				ReceiveNo:       "W202346303032926051900002",
+				ReceiptTypeCode: "lyz005",
+				ReceiptTypeName: "客退收料",
+				QCNo:            "QC260512000018",
+				MaterialCode:    "11002204007001",
+				TotalQty:        51,
+				QualifiedQty:    50,
+				UnqualifiedQty:  1,
+				IsQCConfirmed:   true,
+				QCUser:          "古波",
+				QCTime:          &now,
+				IsInbound:       false,
+				Status:          "未完成",
+				OrgCode:         "2023463030329",
+				OrgName:         "萧梓彬",
+				Source:          "手动创建",
+				ModifierID:      "2023463030329",
+				ModifierName:    "萧梓彬",
+				ModifyTime:      &now,
 			},
 			{
-				InboundNo:      "MESSC202405200001",
-				IsUrgent:       false,
-				ConfirmType:    "来料入库确认",
-				ReceiveNo:      "W202405200001",
-				QCNo:           "QC202405200001",
-				MaterialCode:   "33004070001",
-				TotalQty:       100,
-				QualifiedQty:   100,
-				UnqualifiedQty: 0,
-				IsQCConfirmed:  true,
-				QCUser:         "admin1",
-				QCTime:         &now,
-				IsInbound:      true,
-				InboundUser:    "admin1",
-				InboundTime:    &now,
-				OrgCode:        "ORG001",
-				OrgName:        "生产一车间",
-				Source:         "手动创建",
+				InboundNo:       "MESSC202405200001",
+				IsUrgent:        false,
+				ConfirmType:     "来料入库确认",
+				ReceiveNo:       "W202346303012826051200016",
+				ReceiptTypeCode: "0001",
+				ReceiptTypeName: "初始化收料",
+				QCNo:            "QC202405200001",
+				MaterialCode:    "33004070001",
+				TotalQty:        100,
+				QualifiedQty:    100,
+				UnqualifiedQty:  0,
+				IsQCConfirmed:   true,
+				QCUser:          "admin1",
+				QCTime:          &now,
+				IsInbound:       true,
+				InboundUser:     "admin1",
+				InboundTime:     &now,
+				Status:          "已完成",
+				OrgCode:         "2023463030128",
+				OrgName:         "韦之猛",
+				Source:          "手动创建",
+				ModifierID:      "2023463030128",
+				ModifierName:    "韦之猛",
+				ModifyTime:      &now,
 			},
 		}
 		DB.Create(&orders)
@@ -155,6 +177,37 @@ func seedOutboundOrders() {
 		}
 		DB.Create(&orders)
 		fmt.Println("Seed outbound orders created.")
+	}
+}
+
+func seedMSDRecords() {
+	var count int64
+	DB.Model(&MSDRecord{}).Count(&count)
+	if count == 0 {
+		records := []MSDRecord{
+			{
+				MaterialCode:   "33004070002",
+				LotNo:          "LOT20240522001",
+				MSLLevel:       "3",
+				TotalFloorLife: 168,
+				RemainingLife:  168,
+				Status:         "InBag",
+				Warehouse:      "电子料仓",
+				Operator:       "admin1",
+			},
+			{
+				MaterialCode:   "11002204007001",
+				LotNo:          "LOT20240522002",
+				MSLLevel:       "4",
+				TotalFloorLife: 72,
+				RemainingLife:  48.5,
+				Status:         "Exposed",
+				Warehouse:      "电子料仓",
+				Operator:       "admin2",
+			},
+		}
+		DB.Create(&records)
+		fmt.Println("Seed MSD records created.")
 	}
 }
 

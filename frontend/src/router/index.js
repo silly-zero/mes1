@@ -39,6 +39,11 @@ const routes = [
         path: 'outbound',
         name: 'Outbound',
         component: () => import('../views/Outbound.vue')
+      },
+      {
+        path: 'msd',
+        name: 'MSD',
+        component: () => import('../views/MSD.vue')
       }
     ]
   }

@@ -40,7 +40,7 @@ func InitDB() {
 	}
 
 	// 自动迁移
-	err = db.AutoMigrate(&User{}, &Material{}, &InboundOrder{}, &OutboundOrder{}, &Stock{}, &StockLog{})
+	err = db.AutoMigrate(&User{}, &Material{}, &InboundOrder{}, &OutboundOrder{}, &Stock{}, &StockLog{}, &MSDRecord{})
 	if err != nil {
 		log.Fatalf("Failed to migrate database: %v", err)
 	}

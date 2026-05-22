@@ -8,11 +8,27 @@
         </div>
       </template>
 
-      <el-table :data="pendingOrders" border style="width: 100%" v-loading="loading">
-        <el-table-column prop="inbound_no" label="入库确认单号" width="180" />
-        <el-table-column prop="material_code" label="物料编码" />
-        <el-table-column prop="total_qty" label="收料数量" />
-        <el-table-column label="操作" width="120">
+      <el-table :data="pendingOrders" border style="width: 100%" v-loading="loading" height="calc(100vh - 250px)">
+        <el-table-column type="index" label="行号" width="60" fixed="left" />
+        <el-table-column prop="inbound_no" label="入库确认单号" width="220" fixed="left">
+          <template #default="scope">
+            <span style="color: #E6A23C;">{{ scope.row.inbound_no }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="receive_no" label="收料单号" width="220" />
+        <el-table-column prop="material_code" label="物料编码" width="150" />
+        <el-table-column prop="total_qty" label="收料数量" width="100" />
+        <el-table-column prop="receipt_type_name" label="收料类型" width="150" />
+        <el-table-column prop="supplier_name" label="供应商" width="200" />
+        <el-table-column prop="org_name" label="组织名称" width="150" />
+        <el-table-column prop="is_urgent" label="加急" width="80" align="center">
+          <template #default="scope">
+            <el-tag :type="scope.row.is_urgent ? 'danger' : 'info'" size="small">
+              {{ scope.row.is_urgent ? '是' : '否' }}
+            </el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" width="120" fixed="right" align="center">
           <template #default="scope">
             <el-button type="warning" size="small" @click="handleInspect(scope.row)">进行检验</el-button>
           </template>

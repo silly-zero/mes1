@@ -41,6 +41,16 @@ func main() {
 			inventory.POST("/inbound/:id", handlers.ConfirmInbound) // 3. 入库
 			inventory.POST("/outbound", handlers.CreateOutboundOrder) // 出库
 			inventory.GET("/outbound", handlers.GetOutboundOrders)    // 出库列表
+
+			// 湿敏物料管理
+			msd := inventory.Group("/msd")
+			{
+				msd.GET("/", handlers.GetMSDList)
+				msd.POST("/", handlers.CreateMSDRecord)
+				msd.POST("/open/:id", handlers.OpenMSDBag)
+				msd.POST("/close/:id", handlers.CloseMSDBag)
+				msd.POST("/bake/:id", handlers.StartBaking)
+			}
 		}
 
 		// 核心管理员权限

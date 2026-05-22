@@ -28,6 +28,7 @@
             <el-menu-item index="/iqc">来料检验</el-menu-item>
             <el-menu-item index="/inbound">入库管理</el-menu-item>
             <el-menu-item index="/outbound">出库管理</el-menu-item>
+            <el-menu-item index="/msd">湿敏物料</el-menu-item>
           </el-sub-menu>
         </el-menu>
       </el-aside>
