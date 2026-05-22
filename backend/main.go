@@ -47,9 +47,7 @@ func main() {
 		core := auth.Group("/core")
 		core.Use(middleware.RoleMiddleware(models.RoleCoreAdmin))
 		{
-			core.GET("/dashboard", func(c *gin.Context) {
-				c.JSON(200, gin.H{"message": "欢迎进入核心管理员面板"})
-			})
+			core.GET("/dashboard", handlers.GetDashboardStats)
 		}
 
 		// 普通管理员权限

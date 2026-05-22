@@ -50,6 +50,9 @@ func InitDB() {
 
 	// 3. 初始化默认账号
 	SeedAdmin()
+
+	// 4. 填充演示数据
+	SeedData()
 }
 
 // SeedAdmin 初始化默认核心管理员

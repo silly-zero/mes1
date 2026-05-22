@@ -253,3 +253,28 @@ func GetOutboundOrders(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, orders)
 }
+
+// GetDashboardStats 获取首页统计数据
+func GetDashboardStats(c *gin.Context) {
+	var todayInbound int64
+	var pendingQC int64
+	var lowStock int64
+
+	now := time.Now()
+	today := now.Format("2006-01-02")
+
+	// 1. 今日入库单 (已入库确认的)
+	models.DB.Model(&models.InboundOrder{}).Where("is_inbound = ? AND inbound_time LIKE ?", true, today+"%").Count(&todayInbound)
+
+	// 2. 待检验批次
+	models.DB.Model(&models.InboundOrder{}).Where("is_qc_confirmed = ?", false).Count(&pendingQC)
+
+	// 3. 库存预警 (假设数量小于 100 为预警)
+	models.DB.Model(&models.Stock{}).Where("quantity < ?", 100).Count(&lowStock)
+
+	c.JSON(http.StatusOK, gin.H{
+		"today_inbound": todayInbound,
+		"pending_qc":    pendingQC,
+		"low_stock":     lowStock,
+	})
+}
