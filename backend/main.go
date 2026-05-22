@@ -31,13 +31,16 @@ func main() {
 	auth := api.Group("/")
 	auth.Use(middleware.AuthMiddleware())
 	{
-		// 库存管理
+		// 库存管理相关
 		inventory := auth.Group("/inventory")
 		{
-			inventory.GET("/list", handlers.GetStockList)
-			inventory.GET("/inbound", handlers.GetInboundOrders)
-			inventory.POST("/inbound", handlers.CreateInboundOrder)
-			inventory.POST("/inbound/:id/confirm", handlers.ConfirmInbound)
+			inventory.GET("/stock", handlers.GetStockList)      // 库存列表
+			inventory.GET("/inbound", handlers.GetInboundOrders) // 入库单列表
+			inventory.POST("/receipt", handlers.CreateReceipt)   // 1. 收料
+			inventory.POST("/iqc/:id", handlers.ConfirmIQC)     // 2. 检验
+			inventory.POST("/inbound/:id", handlers.ConfirmInbound) // 3. 入库
+			inventory.POST("/outbound", handlers.CreateOutboundOrder) // 出库
+			inventory.GET("/outbound", handlers.GetOutboundOrders)    // 出库列表
 		}
 
 		// 核心管理员权限

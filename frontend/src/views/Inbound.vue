@@ -65,7 +65,7 @@ const fetchData = async () => {
 
 const handleConfirm = async (id) => {
   try {
-    await axios.post(`/inventory/inbound/${id}/confirm`)
+    await axios.post(`/inventory/inbound/${id}`)
     ElMessage.success('入库成功')
     fetchData()
   } catch (error) {

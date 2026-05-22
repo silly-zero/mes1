@@ -21,9 +21,24 @@ const routes = [
         component: () => import('../views/Inventory.vue')
       },
       {
+        path: 'receipt',
+        name: 'Receipt',
+        component: () => import('../views/Receipt.vue')
+      },
+      {
+        path: 'iqc',
+        name: 'IQC',
+        component: () => import('../views/IQC.vue')
+      },
+      {
         path: 'inbound',
         name: 'Inbound',
         component: () => import('../views/Inbound.vue')
+      },
+      {
+        path: 'outbound',
+        name: 'Outbound',
+        component: () => import('../views/Outbound.vue')
       }
     ]
   }

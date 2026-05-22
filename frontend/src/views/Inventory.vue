@@ -32,7 +32,7 @@ const loading = ref(false)
 const fetchData = async () => {
   loading.value = true
   try {
-    const res = await axios.get('/inventory/list')
+    const res = await axios.get('/inventory/stock')
     tableData.value = res
   } catch (error) {
     console.error(error)
